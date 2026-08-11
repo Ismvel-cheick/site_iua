@@ -9,8 +9,10 @@ import { PartnersSection } from '@/components/PartnersSection';
 import { PortalHeader } from '@/components/PortalHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { UfrPage } from '@/components/UfrPage';
+import { UniversityOverviewSection } from '@/components/UniversityOverviewSection';
+import { CampusPage } from '@/components/CampusPage';
 
-export type ViewType = 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr';
+export type ViewType = 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr' | 'campus';
 
 function App() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
@@ -37,6 +39,7 @@ function App() {
           <>
             <HeroSection onProfileSelect={setSelectedProfile} />
             <NewsSection />
+            <UniversityOverviewSection />
             <PartnersSection />
           </>
         )}
@@ -55,6 +58,10 @@ function App() {
 
         {currentView === 'ufr' && (
           <UfrPage onBack={() => setCurrentView('home')} initialUfrId={selectedUfrId} />
+        )}
+
+        {currentView === 'campus' && (
+          <CampusPage onBack={() => setCurrentView('home')} />
         )}
       </main>
 

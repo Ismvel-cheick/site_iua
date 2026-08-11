@@ -1,22 +1,31 @@
 import { useState } from 'react';
-import { ChevronDown, Menu, Search, X, BookOpen, GraduationCap, Building2 } from 'lucide-react';
+import { ChevronDown, Menu, Search, X, Plus } from 'lucide-react';
 
-const navItems = ['Formation', 'Recherche', 'International', 'Vie de campus', "L'IUA"];
+const navItems = ['Formation', 'Recherche', 'International', 'Vie des campus', "Entreprises", "Partenaires"];
 
 interface PortalHeaderProps {
-  onNavigate?: (view: 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr', ufrId?: string) => void;
-  activeView?: 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr';
+  onNavigate?: (view: 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr' | 'campus', ufrId?: string) => void;
+  activeView?: 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr' | 'campus';
 }
 
 export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [ufrDropdownOpen, setUfrDropdownOpen] = useState(false);
+  const [campusDropdownOpen, setCampusDropdownOpen] = useState(false);
 
   const handleUfrClick = (ufrId: string) => {
     setUfrDropdownOpen(false);
     setMenuOpen(false);
     if (onNavigate) {
       onNavigate('ufr', ufrId);
+    }
+  };
+
+  const handleNavClick = (view: 'home' | 'actualites' | 'library' | 'laboratoires' | 'ufr' | 'campus') => {
+    setCampusDropdownOpen(false);
+    setMenuOpen(false);
+    if (onNavigate) {
+      onNavigate(view);
     }
   };
 
@@ -40,10 +49,8 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
         <a
           href="#accueil"
           onClick={(e) => {
-            if (onNavigate) {
-              e.preventDefault();
-              onNavigate('home');
-            }
+            e.preventDefault();
+            handleNavClick('home');
           }}
           className="flex items-center gap-4"
           aria-label="Accueil Institut Universitaire d'Abidjan"
@@ -60,7 +67,7 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
 
         <div className="hidden items-center gap-7 text-[12px] font-medium text-slate-600 lg:flex">
           <button
-            onClick={() => onNavigate && onNavigate('actualites')}
+            onClick={() => handleNavClick('actualites')}
             className={`transition-colors hover:text-sky-600 ${
               activeView === 'actualites' ? 'font-bold text-sky-700 border-b-2 border-sky-500 pb-0.5' : ''
             }`}
@@ -68,7 +75,7 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
             Actualités
           </button>
           <button
-            onClick={() => onNavigate && onNavigate('library')}
+            onClick={() => handleNavClick('library')}
             className={`transition-colors hover:text-sky-600 ${
               activeView === 'library' ? 'font-bold text-sky-700 border-b-2 border-sky-500 pb-0.5' : ''
             }`}
@@ -76,7 +83,7 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
             Bibliothèques
           </button>
           <button
-            onClick={() => onNavigate && onNavigate('laboratoires')}
+            onClick={() => handleNavClick('laboratoires')}
             className={`transition-colors hover:text-sky-600 ${
               activeView === 'laboratoires' ? 'font-bold text-sky-700 border-b-2 border-sky-500 pb-0.5' : ''
             }`}
@@ -84,7 +91,7 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
             Laboratoires
           </button>
 
-          {/* Bouton Mega-Menu UFR, écoles, instituts (Comme sur la photo !) */}
+          {/* Bouton Mega-Menu UFR, écoles, instituts */}
           <div
             className="relative"
             onMouseEnter={() => setUfrDropdownOpen(true)}
@@ -100,42 +107,29 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
               <ChevronDown size={13} className={`transition-transform ${ufrDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Mega Dropdown Menu UFR (Style exact de la photo) */}
+            {/* Mega Dropdown Menu UFR */}
             {ufrDropdownOpen && (
               <div className="absolute left-1/2 -translate-x-1/2 top-full z-50 w-[420px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl animate-fadeIn">
                 <div className="space-y-5 text-left">
-                  
                   {/* UFR Section */}
                   <div>
                     <h4 className="border-b border-slate-200 pb-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">
                       UFR • UNITÉS DE FORMATION ET DE RECHERCHE
                     </h4>
                     <div className="mt-3 space-y-2">
-                      <button
-                        onClick={() => handleUfrClick('informatique')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('informatique')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>Informatique & Sciences Technologies</span>
                         <span className="text-[10px] text-sky-600 font-semibold bg-sky-100 px-2 py-0.5 rounded">CAMES</span>
                       </button>
-                      <button
-                        onClick={() => handleUfrClick('droit')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('droit')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>Droit & Sciences Politiques</span>
                         <span className="text-[10px] text-sky-600 font-semibold bg-sky-100 px-2 py-0.5 rounded">OHADA</span>
                       </button>
-                      <button
-                        onClick={() => handleUfrClick('gestion')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('gestion')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>Sciences Économiques & de Gestion</span>
                         <span className="text-[10px] text-sky-600 font-semibold bg-sky-100 px-2 py-0.5 rounded">Finance</span>
                       </button>
-                      <button
-                        onClick={() => handleUfrClick('communication')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('communication')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>Arts, Lettres, Langues & Communication</span>
                         <span className="text-[10px] text-sky-600 font-semibold bg-sky-100 px-2 py-0.5 rounded">Médias</span>
                       </button>
@@ -148,33 +142,22 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
                       INSTITUTS • ÉCOLES
                     </h4>
                     <div className="mt-3 space-y-2">
-                      <button
-                        onClick={() => handleUfrClick('vatel')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-amber-50 hover:text-amber-700"
-                      >
+                      <button onClick={() => handleUfrClick('vatel')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-amber-50 hover:text-amber-700">
                         <span>Vatel Abidjan – Management Hôtelier</span>
                         <span className="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded">International</span>
                       </button>
-                      <button
-                        onClick={() => handleUfrClick('informatique')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('informatique')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>École d'Ingénieurs & Data Science IUA</span>
                       </button>
-                      <button
-                        onClick={() => handleUfrClick('gestion')}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600"
-                      >
+                      <button onClick={() => handleUfrClick('gestion')} className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-slate-800 transition hover:bg-sky-50 hover:text-sky-600">
                         <span>Institut des Sciences Actuarielles & Financières</span>
                       </button>
                     </div>
                   </div>
-
                 </div>
               </div>
             )}
           </div>
-
         </div>
 
         <button
@@ -186,27 +169,86 @@ export function PortalHeader({ onNavigate, activeView = 'home' }: PortalHeaderPr
         </button>
       </div>
 
-      <nav className={`${menuOpen ? 'block' : 'hidden'} relative z-30 lg:block lg:-mb-6 lg:translate-y-2`}>
-        <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-800/30 bg-white shadow-xl backdrop-blur-md lg:flex-row lg:items-center">
-            {navItems.map((item, index) => (
-              <button
-                key={item}
-                onClick={() => {
-                  if (item === 'Formation' && onNavigate) {
-                    onNavigate('ufr', 'informatique');
-                  } else if (item === 'Recherche' && onNavigate) {
-                    onNavigate('laboratoires');
-                  } else if (onNavigate) {
-                    onNavigate('home');
-                  }
-                }}
-                className="group flex items-center justify-between border-b border-slate-800/25 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.1em] text-slate-800 transition-all hover:bg-sky-50 hover:text-sky-600 lg:flex-1 lg:justify-center lg:border-b-0 lg:border-r lg:border-slate-800/25 lg:py-3.5 last:lg:border-r-0"
-              >
-                <span>{item}</span>
-                <span className="h-px w-0 bg-sky-500 transition-all duration-300 group-hover:w-6 lg:hidden" />
-              </button>
-            ))}
+      <nav className={`${menuOpen ? 'block' : 'hidden'} relative z-30 lg:block border-t border-slate-200 lg:border-t-0`}>
+        <div className="mx-auto max-w-[1440px] lg:px-12">
+          <div className="flex flex-col bg-white lg:flex-row lg:items-center">
+            {navItems.map((item, index) => {
+              
+              if (item === 'Vie des campus') {
+                return (
+                  <div
+                    key={item}
+                    className="relative lg:flex-1"
+                    onMouseEnter={() => setCampusDropdownOpen(true)}
+                    onMouseLeave={() => setCampusDropdownOpen(false)}
+                  >
+                    <button
+                      className={`group flex w-full items-center justify-between border-b border-slate-100 px-6 py-4 text-[13px] font-bold uppercase tracking-[0.05em] text-[#1a3b5c] transition-all hover:text-[#007b8f] lg:justify-center lg:border-b-0 lg:py-5 ${
+                        activeView === 'campus' || campusDropdownOpen ? 'border-b-[3px] border-b-[#007b8f] text-[#007b8f] bg-[#f8fafc]' : ''
+                      }`}
+                    >
+                      <span>{item}</span>
+                    </button>
+                    
+                    {/* Menu déroulant Vie des Campus */}
+                    {campusDropdownOpen && (
+                      <div className="absolute left-0 top-full z-50 w-full min-w-[320px] bg-[#f8fafc] border-t-2 border-[#007b8f] shadow-lg animate-fadeIn lg:w-[350px]">
+                        <div className="flex flex-col">
+                          <button onClick={() => handleNavClick('campus')} className="flex items-center justify-between border-b border-slate-200 px-6 py-4 text-sm font-semibold text-[#1a3b5c] hover:bg-white hover:text-[#007b8f] group">
+                            <span className="uppercase">Les Campus</span>
+                            <Plus size={18} className="text-[#1a3b5c] group-hover:text-[#007b8f]" />
+                          </button>
+                          <button className="flex items-center justify-between border-b border-slate-200 px-6 py-4 text-sm font-semibold text-[#1a3b5c] hover:bg-white hover:text-[#007b8f] group">
+                            <span className="uppercase">Vie Universitaire</span>
+                            <Plus size={18} className="text-[#1a3b5c] group-hover:text-[#007b8f]" />
+                          </button>
+                          <button onClick={() => handleNavClick('library')} className="flex items-center justify-between border-b border-slate-200 px-6 py-4 text-sm font-semibold text-[#1a3b5c] hover:bg-white hover:text-[#007b8f] group">
+                            <span className="uppercase">Bibliothèques</span>
+                          </button>
+                          <button className="flex items-center justify-between border-b border-slate-200 px-6 py-4 text-sm font-semibold text-[#1a3b5c] hover:bg-white hover:text-[#007b8f] group">
+                            <span className="uppercase">Pratique</span>
+                            <Plus size={18} className="text-[#1a3b5c] group-hover:text-[#007b8f]" />
+                          </button>
+                          <button className="flex items-center justify-between border-b border-slate-200 px-6 py-4 text-sm font-semibold text-[#1a3b5c] hover:bg-white hover:text-[#007b8f] group">
+                            <span className="uppercase">Bien vivre</span>
+                            <Plus size={18} className="text-[#1a3b5c] group-hover:text-[#007b8f]" />
+                          </button>
+                        </div>
+                        <div className="flex gap-4 p-5 bg-[#f8fafc]">
+                          <button onClick={() => handleNavClick('actualites')} className="rounded-full bg-[#9c753b] px-6 py-2 text-xs font-bold text-white hover:bg-[#85612f]">
+                            Actualités
+                          </button>
+                          <button className="rounded-full bg-[#9c753b] px-6 py-2 text-xs font-bold text-white hover:bg-[#85612f]">
+                            Agenda
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <button
+                  key={item}
+                  onClick={() => {
+                    if (item === 'Formation') {
+                      handleNavClick('ufr');
+                    } else if (item === 'Recherche') {
+                      handleNavClick('laboratoires');
+                    } else {
+                      handleNavClick('home');
+                    }
+                  }}
+                  className={`group flex items-center justify-between border-b border-slate-100 px-6 py-4 text-[13px] font-bold uppercase tracking-[0.05em] text-[#1a3b5c] transition-all hover:text-[#007b8f] lg:flex-1 lg:justify-center lg:border-b-0 lg:py-5 ${
+                    activeView === item.toLowerCase() ? 'border-b-[3px] border-b-[#007b8f] text-[#007b8f]' : ''
+                  }`}
+                >
+                  <span>{item}</span>
+                  <span className="h-px w-0 bg-[#007b8f] transition-all duration-300 group-hover:w-6 lg:hidden" />
+                </button>
+              );
+            })}
           </div>
         </div>
       </nav>

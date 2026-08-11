@@ -217,14 +217,14 @@ export function LibraryPage({ onBack }: LibraryPageProps) {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       
       {/* Barre supérieure de navigation rapide BU */}
-      <div className="border-b border-slate-800 bg-slate-950 text-white">
+      <div className="border-b border-sky-900/50 bg-[#1a3b5c] text-white">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-3 text-xs sm:px-8 lg:px-12">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 font-semibold text-sky-400 transition hover:text-white"
+            className="flex items-center gap-2 font-bold uppercase tracking-wider text-sky-300 transition hover:text-white text-xs"
           >
-            <ArrowLeft size={16} />
-            <span>Retour au Portail Général IUA</span>
+            <ArrowLeft size={14} />
+            <span>RETOUR</span>
           </button>
 
           <div className="flex items-center gap-4 text-[11px] font-medium text-slate-400">

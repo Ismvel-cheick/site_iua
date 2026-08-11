@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LogIn, Shield } from 'lucide-react';
+import { LogIn, Shield, ArrowLeft } from 'lucide-react';
 
 interface LoginPageProps {
   profile: string;
@@ -124,9 +124,9 @@ export function LoginPage({ profile, onBack }: LoginPageProps) {
         <div className="mt-6 text-center">
           <button
             onClick={onBack}
-            className="text-xs font-medium text-slate-500 transition hover:text-slate-800"
+            className="mx-auto flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-500 transition hover:text-slate-800"
           >
-            ← Retour à l'accueil
+            <ArrowLeft size={14} /> RETOUR
           </button>
         </div>
       </div>
